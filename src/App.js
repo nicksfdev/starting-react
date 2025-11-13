@@ -24,16 +24,27 @@ PokemonRow.propTypes = {
 };
 
 const PokemonInfo = ({ name, base }) => (
-  <div>
+  <div
+    style={{
+      fontSize: "small",
+    }}
+  >
     <h1>{name.english}</h1>
     <table>
-      {Object.keys(base).map(key => (
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Object.keys(base).map((key) => (
           <tr key={key}>
             <td>{key}</td>
             <td>{base[key]}</td>
           </tr>
-        ))
-      }
+        ))}
+      </tbody>
     </table>
   </div>
 );
@@ -50,8 +61,7 @@ PokemonInfo.propTypes = {
     "Sp. Defense": PropTypes.number.isRequired,
     Speed: PropTypes.number.isRequired,
   }),
-}
-
+};
 
 function App() {
   const [filter, filterSet] = React.useState("");
@@ -102,7 +112,7 @@ function App() {
             </tbody>
           </table>
         </div>
-        {selectedItem && <PokemonInfo {...selectedItem}/>}
+        {selectedItem && <PokemonInfo {...selectedItem} />}
       </div>
     </div>
   );
