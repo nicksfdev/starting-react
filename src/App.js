@@ -1,6 +1,29 @@
 import React from "react";
 import "./App.css";
 import PropTypes from "prop-types";
+import styled from "@emotion/styled";
+
+const Title = styled.h1`
+  text-aligned: center;
+`;
+
+const TwoColumnLayout = styled.div`
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 1rem;
+`;
+
+const Container = styled.div`
+  margin: auto;
+  width: 500px;
+  padding-top: 1rem;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  font-size: x-large;
+  padding: 0.2rem;
+`;
 
 const PokemonRow = ({ pokemon, onSelect }) => (
   <tr key={pokemon.id}>
@@ -69,27 +92,15 @@ function App() {
 
   React.useEffect(() => {
     fetch("http://localhost:3000/starting-react/pokemon.json")
-    .then(resp => resp.json())
-    .then(data => pokemonSet(data));
+      .then((resp) => resp.json())
+      .then((data) => pokemonSet(data));
   }, []);
   return (
-    <div
-      style={{
-        margin: "auto",
-        width: "500px",
-        paddingTop: "1rem",
-      }}
-    >
-      <h1 className="title">Business List</h1>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "70% 30%",
-          gridColumnGap: "1rem",
-        }}
-      >
+      <Container>
+      <Title>Business List</Title>
+      <TwoColumnLayout>
         <div>
-          <input
+          <Input
             value={filter}
             onChange={(evt) => filterSet(evt.target.value)}
           />
@@ -119,8 +130,8 @@ function App() {
           </table>
         </div>
         {selectedItem && <PokemonInfo {...selectedItem} />}
-      </div>
-    </div>
+      </TwoColumnLayout>
+    </Container>
   );
 }
 
