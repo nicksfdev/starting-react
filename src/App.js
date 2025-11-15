@@ -31,7 +31,13 @@ const PokemonRow = ({ pokemon, onSelect }) => (
     <td>{pokemon.name.english}</td>
     <td>{pokemon.type.join(", ")}</td>
     <td>
-      <Button variant="contained" size="small" onClick={() => onSelect(pokemon)}>Select!</Button>
+      <Button
+        variant="contained"
+        size="small"
+        onClick={() => onSelect(pokemon)}
+      >
+        Select!
+      </Button>
     </td>
   </tr>
 );
@@ -86,18 +92,90 @@ PokemonInfo.propTypes = {
   }),
 };
 
-function App() {
+/*
+ * the App defined as a Class Component
+ */
+export class AppClassComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: "",
+      pokemon: [],
+      selectedItem: null,
+    };
+  }
+  componentDidMount() {
+    fetch("/starting-react/pokemon.json")
+      .then((resp) => resp.json())
+      .then((pokemon) => this.setState({...this.state, pokemon}));    
+  }
+
+  render() {
+    return (
+      <Container>
+        <Title>Business List</Title>
+        <TwoColumnLayout>
+          <div>
+            <Input
+              value={this.state.filter}
+              onChange={(evt) =>
+                this.setState({ ...this.state, filter: evt.target.value })
+              }
+            />
+            <table width="100%">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.pokemon
+                  .filter((pokemon) =>
+                    pokemon.name.english
+                      .toLowerCase()
+                      .includes(this.state.filter.toLowerCase())
+                  )
+                  .slice(0, 20)
+                  .map((pokemon) => (
+                    <PokemonRow
+                      pokemon={pokemon}
+                      key={pokemon.id}
+                      onSelect={(pokemon) =>
+                        this.setState({ ...this.state, selectedItem: pokemon })
+                      }
+                    />
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          {this.state.selectedItem && (
+            <PokemonInfo {...this.state.selectedItem} />
+          )}
+        </TwoColumnLayout>
+      </Container>
+    );
+  }
+}
+
+/*
+ * the App defined as a Functional Component
+ */
+function AppFunctionalComponent() {
   const [filter, filterSet] = React.useState("");
   const [pokemon, pokemonSet] = React.useState([]);
   const [selectedItem, selectedItemSet] = React.useState(null);
 
   React.useEffect(() => {
-    fetch("http://localhost:3000/starting-react/pokemon.json")
+    //commented out, since localhost is not testable from other computers
+    //fetch("http://localhost:3000/starting-react/pokemon.json")
+    fetch("/starting-react/pokemon.json")
       .then((resp) => resp.json())
       .then((data) => pokemonSet(data));
   }, []);
+
   return (
-      <Container>
+    <Container>
       <Title>Business List</Title>
       <TwoColumnLayout>
         <div>
@@ -136,4 +214,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppFunctionalComponent;
