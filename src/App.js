@@ -119,7 +119,7 @@ export class AppClassComponent extends React.Component {
             <Input
               value={this.state.filter}
               onChange={(evt) =>
-                this.setState({ ...this.state, filter: evt.target.value })
+                this.setState({ filter: evt.target.value })
               }
             />
             <table width="100%">
@@ -142,7 +142,7 @@ export class AppClassComponent extends React.Component {
                       pokemon={pokemon}
                       key={pokemon.id}
                       onSelect={(pokemon) =>
-                        this.setState({ ...this.state, selectedItem: pokemon })
+                        this.setState({ selectedItem: pokemon })
                       }
                     />
                   ))}
